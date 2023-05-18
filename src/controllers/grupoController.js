@@ -6,6 +6,15 @@ const getAllGroups = async (req, res) => {
   res.json({ grupos: groups });
 };
 
+const getAllGroupsByUserId = async(req, res) =>{
+  if(!req?.body?.userId)
+  return res.status(400).json({ message: "UserId parameter is required" });
+
+  const groups = await Grupo.find({userId: req.body.userId}).exec();
+
+  res.json({grupos: groups});
+}
+
 const createNewGroup = async (req, res) => {
   if (!req?.body?.name || !req?.body?.userId || !req?.body?.color) {
     return res.status(400).json({ message: "Name and color are required" });
@@ -49,5 +58,6 @@ const updateGroup = async (req,res) => {
 module.exports = {
   getAllGroups,
   createNewGroup,
-  updateGroup
+  updateGroup,
+  getAllGroupsByUserId
 };
