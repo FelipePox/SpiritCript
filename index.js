@@ -19,6 +19,11 @@ app.use(express.urlencoded({ extended: false }));
 // built-in middleware for json
 app.use(express.json());
 
+
+//Routes
+app.use('/', require('./src/routes/root'))
+
+
 mongoose.connection.once("open", () => {
   console.log("connected to mongoDB!");
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
