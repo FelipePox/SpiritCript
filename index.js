@@ -28,6 +28,8 @@ app.use(express.json());
 
 // Routes
 app.use("/", require("./src/routes/root"));
+app.use("/register", require("./src/routes/register"));
+app.use("/grupos", require("./src/routes/api/grupo"));
 
 // Error handler
 app.use(errorHandler);
