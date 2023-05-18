@@ -6,14 +6,14 @@ const getAllGroups = async (req, res) => {
   res.json({ grupos: groups });
 };
 
-const getAllGroupsByUserId = async(req, res) =>{
-  if(!req?.body?.userId)
-  return res.status(400).json({ message: "UserId parameter is required" });
+const getAllGroupsByUserId = async (req, res) => {
+  if (!req?.body?.userId)
+    return res.status(400).json({ message: "UserId parameter is required" });
 
-  const groups = await Grupo.find({userId: req.body.userId}).exec();
+  const groups = await Grupo.find({ userId: req.body.userId }).exec();
 
-  res.json({grupos: groups});
-}
+  res.json({ grupos: groups });
+};
 
 const createNewGroup = async (req, res) => {
   if (!req?.body?.name || !req?.body?.userId || !req?.body?.color) {
@@ -33,31 +33,29 @@ const createNewGroup = async (req, res) => {
   }
 };
 
+const updateGroup = async (req, res) => {
+  if (!req?.body?.id)
+    return res.status(400).json({ message: "ID parameter is required" });
 
-const updateGroup = async (req,res) => {
-  if(!req?.body?.id)
-  return res.status(400).json({ message: "ID parameter is required" });
-  
-  const group = await Grupo.findOne({_id: req.body.id}).exec()
+  const group = await Grupo.findOne({ _id: req.body.id }).exec();
 
-  if(!group){
+  if (!group) {
     return res
-    .status(204)
-    .json({message: 'No group matches ID' + req.body.id})
+      .status(204)
+      .json({ message: "No group matches ID" + req.body.id });
   }
 
-  if(req.body?.name) group.name = req.body.name;
-  if(req.body?.color) group.color = req.body.color;
-  if(req.body?.userId) group.userId = req.body.userId;
+  if (req.body?.name) group.name = req.body.name;
+  if (req.body?.color) group.color = req.body.color;
+  if (req.body?.userId) group.userId = req.body.userId;
 
   const result = await group.save();
-  res.json(result)
-}
-
+  res.json(result);
+};
 
 module.exports = {
   getAllGroups,
   createNewGroup,
   updateGroup,
-  getAllGroupsByUserId
+  getAllGroupsByUserId,
 };

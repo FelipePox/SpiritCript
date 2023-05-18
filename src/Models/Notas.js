@@ -6,8 +6,9 @@ const notasSchema = new Schema({
   text: { type: String, required: true },
   verse: { type: String, required: true },
   book: { type: String, required: true },
+  userId: { type: String, required: true },
 });
 
-const Notes = mongoose.model("Notes", notasSchema);
+const Notas = mongoose.model("Notes", notasSchema);
 
-module.exports = { Notes };
+module.exports = { Notas };

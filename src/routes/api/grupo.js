@@ -9,6 +9,6 @@ const {
 
 router.route("/").get(getAllGroups).post(createNewGroup).put(updateGroup);
 
-router.route("/:userId").get(getAllGroupsByUserId)
+router.route("/:userId").get(getAllGroupsByUserId);
 
 module.exports = router;
