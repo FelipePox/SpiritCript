@@ -1,28 +1,36 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const path = require("path");
+
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
+const { corsOptions } = require("./src/config/corsOptions");
+const { credentials } = require("./src/middleware/credentials");
+
+const { errorHandler } = require("./src/middleware/errorHandler");
+
 const mongoose = require("mongoose");
 
 const { connectDB } = require("./src/config/dbConn");
 
 const PORT = process.env.PORT || 3500;
 
-//Connection to DB
+// Connection to DB
 connectDB();
 
-// built-in middleware to handle urlencoded form data
-app.use(express.urlencoded({ extended: false }));
+//Handle options credentials check - before CORDS!!!
+app.use(credentials);
+
+// CORS
+app.use(cors(corsOptions));
 
 // built-in middleware for json
 app.use(express.json());
 
+// Routes
+app.use("/", require("./src/routes/root"));
 
-//Routes
-app.use('/', require('./src/routes/root'))
-
+// Error handler
+app.use(errorHandler);
 
 mongoose.connection.once("open", () => {
   console.log("connected to mongoDB!");
