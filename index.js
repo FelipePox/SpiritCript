@@ -31,6 +31,8 @@ app.use("/", require("./src/routes/root"));
 app.use("/register", require("./src/routes/register"));
 app.use("/grupos", require("./src/routes/api/grupo"));
 app.use("/notas", require("./src/routes/api/nota"));
+app.use("/pedidos", require("./src/routes/api/pedido"));
+
 
 // Error handler
 app.use(errorHandler);
