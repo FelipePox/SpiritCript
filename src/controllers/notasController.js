@@ -1,40 +1,37 @@
-const { Notas } = require("../Models/Notas");
+const { Nota } = require("../models/Nota");
 
 const getAllNotas = async (req, res) => {
-  const notes = await Notas.find();
-  if (!notes) return res.status(204).json({ message: "No Notes found" });
+  const notes = await Nota.find();
+  if (!notes) return res.status(204).json({ message: "No note found" });
   return res.json({ notas: notes });
 };
 
 const getAllNotasByUserId = async (req, res) => {
-  if (!req?.body?.userId)
+  const { userId } = req.body;
+  if (!userId)
     return res.status(400).json({ message: "UserId parameter is required" });
 
-  const notes = await Notas.find({ userId: req.body.userId });
+  const notes = await Nota.find({ userId: userId });
 
   res.json({ notas: notes });
 };
 
-const createNewNote = async (req, res) => {
-  if (
-    !req?.body?.title ||
-    !req?.body?.userId ||
-    !req?.body?.text ||
-    !req?.body?.verse ||
-    !req?.body?.book
-  )
+const createNewNota = async (req, res) => {
+  const { title, userId, text, verse, book, grupoId } = req.body;
+
+  if (!title || !userId || !text || !verse || !book)
     return res
       .status(400)
       .json({ message: "Title, userId, test, verse and book are required" });
 
   try {
-    const result = await Notas.create({
-      title: req.body.title,
-      text: req.body.text,
-      verse: req.body.verse,
-      book: req.body.book,
-      userId: req.body.userId,
-      grupoId: req.body.grupoId
+    const result = await Nota.create({
+      title: title,
+      text: text,
+      verse: verse,
+      book: book,
+      userId: userId,
+      grupoId: grupoId,
     });
 
     res.status(200).json(result);
@@ -43,11 +40,12 @@ const createNewNote = async (req, res) => {
   }
 };
 
-const updateNote = async (req, res) => {
-  if (!req?.body?.id)
-    return res.status(400).json({ message: "ID parameter is required" });
+const updateNota = async (req, res) => {
+  const { id, title, text, book, verse, userId, grupoId } = req.body;
 
-  const note = await Notas.findOne({ _id: req.body.id }).exec();
+  if (!id) return res.status(400).json({ message: "ID parameter is required" });
+
+  const note = await Nota.findOne({ _id: req.body.id }).exec();
 
   if (!note) {
     return res
@@ -55,20 +53,36 @@ const updateNote = async (req, res) => {
       .json({ message: "No note matches ID" + req.body.id });
   }
 
-  if (req.body?.title) note.title = req.body.title;
-  if (req.body?.text) note.text = req.body.text;
-  if (req.body?.verse) note.verse = req.body.verse;
-  if (req.body?.book) note.book = req.body.book;
-  if (req.body?.userId) note.userId = req.body.userId;
-  if(req.body?.grupoId) note.grupoId = req.body.grupoId;
+  if (title) note.title = title;
+  if (text) note.text = text;
+  if (verse) note.verse = verse;
+  if (book) note.book = book;
+  if (userId) note.userId = userId;
+  if (grupoId) note.grupoId = grupoId;
 
   const result = await note.save();
   res.status(200).json(result);
 };
 
+const deleteNota = async (req, res) => {
+  const { id } = req.body;
+  if (!id) return res.status(400).json({ message: "ID parameter is required" });
+
+  const foundNota = await Nota.findOne({ _id: id });
+  if (!foundNota)
+    return res
+      .status(204)
+      .json({ message: "No note matches ID" + req.body.id });
+
+  const result = await Nota.deleteOne({ _id: id });
+
+  res.status(200).json(result);
+};
+
 module.exports = {
-  updateNote,
-  createNewNote,
+  updateNota,
+  createNewNota,
   getAllNotas,
   getAllNotasByUserId,
+  deleteNota,
 };
