@@ -1,4 +1,4 @@
-const { Notas } = require("../models/Notas");
+const { Notas } = require("../Models/Notas");
 
 const getAllNotas = async (req, res) => {
   const notes = await Notas.find();
@@ -34,6 +34,7 @@ const createNewNote = async (req, res) => {
       verse: req.body.verse,
       book: req.body.book,
       userId: req.body.userId,
+      grupoId: req.body.grupoId
     });
 
     res.status(200).json(result);
@@ -58,7 +59,8 @@ const updateNote = async (req, res) => {
   if (req.body?.text) note.text = req.body.text;
   if (req.body?.verse) note.verse = req.body.verse;
   if (req.body?.book) note.book = req.body.book;
-  if (req.body?.userId) note.book = req.body.userId;
+  if (req.body?.userId) note.userId = req.body.userId;
+  if(req.body?.grupoId) note.grupoId = req.body.grupoId;
 
   const result = await note.save();
   res.status(200).json(result);

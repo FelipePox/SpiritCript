@@ -32,7 +32,7 @@ app.use("/", require("./src/routes/root"));
 app.use("/register", require("./src/routes/register"));
 app.use("/auth", require("./src/routes/auth"));
 
-app.use(verifyJWT);
+//app.use(verifyJWT);
 
 app.use("/grupos", require("./src/routes/api/grupo"));
 app.use("/notas", require("./src/routes/api/nota"));
