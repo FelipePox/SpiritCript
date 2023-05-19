@@ -3,11 +3,17 @@ const router = express.Router();
 const {
   getAllNotas,
   getAllNotasByUserId,
-  updateNote,
-  createNewNote,
+  updateNota,
+  createNewNota,
+  deleteNota,
 } = require("../../controllers/notasController");
 
-router.route("/").get(getAllNotas).post(createNewNote).put(updateNote);
+router
+  .route("/")
+  .get(getAllNotas)
+  .post(createNewNota)
+  .put(updateNota)
+  .delete(deleteNota);
 
 router.route("/:userId").get(getAllNotasByUserId);
 
