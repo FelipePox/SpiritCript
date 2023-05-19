@@ -1,14 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getAllGroups,
-  createNewGroup,
-  updateGroup,
-  getAllGroupsByUserId,
+  getAllGrupos,
+  createNewGrupo,
+  updateGrupo,
+  getAllGruposByUserId,
+  deleteGrupo,
 } = require("../../controllers/grupoController");
 
-router.route("/").get(getAllGroups).post(createNewGroup).put(updateGroup);
+router
+  .route("/")
+  .get(getAllGrupos)
+  .post(createNewGrupo)
+  .put(updateGrupo)
+  .delete(deleteGrupo);
 
-router.route("/:userId").get(getAllGroupsByUserId);
+router.route("/:userId").get(getAllGruposByUserId);
 
 module.exports = router;
