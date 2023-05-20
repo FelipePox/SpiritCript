@@ -1,5 +1,6 @@
 const { User } = require("../models/User");
 const bcrypt = require("bcrypt");
+const { registerBibleAPI } = require("../utils/registerBibleAPI");
 
 const handleNewUser = async (req, res) => {
   const { username, email, pwd } = req.body;
@@ -17,6 +18,8 @@ const handleNewUser = async (req, res) => {
   if (duplicate)
     return res.status(409).json({ message: "Email already used!" });
 
+  const APItoken = await registerBibleAPI(email, pwd);
+
   try {
     const hashedPwd = await bcrypt.hash(pwd, 10);
 
@@ -24,6 +27,7 @@ const handleNewUser = async (req, res) => {
       username: username,
       email: email,
       password: hashedPwd,
+      APItoken: APItoken,
     });
 
     console.log(result);
