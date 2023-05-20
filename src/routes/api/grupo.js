@@ -6,6 +6,7 @@ const {
   updateGrupo,
   getAllGruposByUserId,
   deleteGrupo,
+  getGrupoById,
 } = require("../../controllers/grupoController");
 
 router
@@ -16,5 +17,7 @@ router
   .delete(deleteGrupo);
 
 router.route("/:userId").get(getAllGruposByUserId);
+
+router.route("/:id").get(getGrupoById);
 
 module.exports = router;

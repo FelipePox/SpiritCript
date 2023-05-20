@@ -17,6 +17,17 @@ const getAllGruposByUserId = async (req, res) => {
   res.json({ grupos: groups });
 };
 
+const getGrupoById = async (req, res) => {
+  const { id } = req.body;
+  if (!id) return res.status(400).json({ message: "ID parameter is required" });
+
+  const foundGroup = await Grupo.findOne({ _id: id });
+  if (!foundGroup)
+    return res.status(204).json({ message: "No group matches ID" + id });
+
+  res.status(200).json(foundGroup);
+};
+
 const createNewGrupo = async (req, res) => {
   const { name, userId, color } = req.body;
 
@@ -75,4 +86,5 @@ module.exports = {
   updateGrupo,
   getAllGruposByUserId,
   deleteGrupo,
+  getGrupoById,
 };
