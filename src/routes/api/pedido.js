@@ -13,6 +13,7 @@ router
   .post(createNewPedidoOracao)
   .put(updatePedidoOracao)
   .delete(deletePedidoOracao);
+
 router.route("/:userId").get(getAllPedidoOracaoByUserId);
 
 module.exports = router;

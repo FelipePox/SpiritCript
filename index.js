@@ -37,6 +37,7 @@ app.use("/auth", require("./src/routes/auth"));
 app.use("/grupos", require("./src/routes/api/grupo"));
 app.use("/notas", require("./src/routes/api/nota"));
 app.use("/pedidos", require("./src/routes/api/pedido"));
+app.use("/amigos", require("./src/routes/api/amigos"));
 
 // Error handler
 app.use(errorHandler);

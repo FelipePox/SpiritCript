@@ -8,8 +8,10 @@ const notasSchema = new Schema({
   book: { type: String, required: true },
   userId: { type: String, required: true },
   grupoId: { type: String, required: false },
+  public: { type: Boolean, default: false },
+  allowed: { type: [String], required: false },
 });
 
-const Nota = mongoose.model("Notes", notasSchema);
+const Nota = mongoose.model("Notas", notasSchema);
 
 module.exports = { Nota };

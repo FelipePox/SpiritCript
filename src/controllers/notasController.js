@@ -1,4 +1,7 @@
+const { Amigos } = require("../models/Amigos");
 const { Nota } = require("../models/Nota");
+const { User } = require("../models/User");
+const { SendEmail } = require("../utils/emailSend");
 
 const getAllNotas = async (req, res) => {
   const notes = await Nota.find();
@@ -17,7 +20,7 @@ const getAllNotasByUserId = async (req, res) => {
 };
 
 const createNewNota = async (req, res) => {
-  const { title, userId, text, verse, book, grupoId } = req.body;
+  const { title, userId, text, verse, book, grupoId, public } = req.body;
 
   if (!title || !userId || !text || !verse || !book)
     return res
@@ -25,18 +28,48 @@ const createNewNota = async (req, res) => {
       .json({ message: "Title, userId, test, verse and book are required" });
 
   try {
-    const result = await Nota.create({
-      title: title,
-      text: text,
-      verse: verse,
-      book: book,
-      userId: userId,
-      grupoId: grupoId,
-    });
+    if (public) {
+      const USER = await User.findOne({ _id: userId });
+      const USERNAME = USER.username;
 
-    res.status(200).json(result);
+      const foundAmigos = await Amigos.findOne({ userId: userId });
+
+      const allowedEmails = foundAmigos.amigos.map((amigo) => amigo.amigoEmail);
+      console.log(allowedEmails);
+
+      const result = await Nota.create({
+        title: title,
+        text: text,
+        verse: verse,
+        book: book,
+        userId: userId,
+        grupoId: grupoId,
+        public: true,
+        allowed: allowedEmails,
+      });
+
+      SendEmail(
+        "SpiritScript - Um amigo seu acabou de postar uma nota!",
+        `Seu amigo ${USERNAME} acabou de criar uma nota! Clique no botão abaixo para acessar a plataforma e lê-la!`,
+        allowedEmails
+      );
+
+      res.status(200).json(result);
+    } else {
+      const result = await Nota.create({
+        title: title,
+        text: text,
+        verse: verse,
+        book: book,
+        userId: userId,
+        grupoId: grupoId,
+      });
+
+      res.status(200).json(result);
+    }
   } catch {
     console.log(err);
+    res.sendStatus(500);
   }
 };
 
