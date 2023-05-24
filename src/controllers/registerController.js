@@ -1,6 +1,7 @@
 const { User } = require("../models/User");
 const bcrypt = require("bcrypt");
 const { registerBibleAPI } = require("../utils/registerBibleAPI");
+const { createAmigos } = require("./amigosController");
 
 const handleNewUser = async (req, res) => {
   const { username, email, pwd } = req.body;
@@ -31,6 +32,10 @@ const handleNewUser = async (req, res) => {
     });
 
     console.log(result);
+
+    console.log(result.id);
+
+    const amigosOfUser = await createAmigos(result.id);
 
     res.status(201).json({ success: `New user ${username} created!` });
   } catch (err) {

@@ -2,6 +2,7 @@ const { User } = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { deleteBibleAPI } = require("../utils/registerBibleAPI");
+const { deleteGrupoDeAmigos } = require("./amigosController");
 
 const handleLogin = async (req, res) => {
   const { email, pwd } = req.body;
@@ -39,16 +40,18 @@ const handleLogin = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  const { id, email, pwd, APItoken } = req.body;
+  const { id, email, pwd } = req.body;
 
-  if (!id || !email || !pwd || !APItoken)
+  if (!id || !email || !pwd)
     return res.status(400).json({ message: "All parameters are required" });
 
   const foundUser = await User.findOne({ _id: id });
   if (!foundUser)
     return res.status(204).json({ message: "No user matches ID" + id });
 
-  const APIdelete = await deleteBibleAPI(email, pwd, APItoken);
+  const APIdelete = await deleteBibleAPI(email, pwd, foundUser.APItoken);
+
+  const deletedAmigos = await deleteGrupoDeAmigos(id);
 
   const result = await User.deleteOne({ _id: id });
 
