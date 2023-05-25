@@ -50,7 +50,7 @@ const createNewNota = async (req, res) => {
 
       SendEmail(
         "SpiritScript - Um amigo seu acabou de postar uma nota!",
-        `Seu amigo ${USERNAME} acabou de criar uma nota! Clique no botão abaixo para acessar a plataforma e lê-la!`,
+        `<h1>Nova nota!</h1><p>Seu amigo ${USERNAME} acabou de postar uma nota! Clique <a href="https://www.youtube.com/watch?v=pfU0QORkRpY">aqui</a> para entrar na plataforma e vê-la!</p>`,
         allowedEmails
       );
 

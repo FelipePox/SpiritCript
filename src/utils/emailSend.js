@@ -19,7 +19,7 @@ const SendEmail = (subject, content, target) => {
     from: "spiritscriptapp@gmail.com",
     to: targets,
     subject: subject,
-    text: content,
+    html: content,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {

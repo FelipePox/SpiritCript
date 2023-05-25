@@ -1,4 +1,7 @@
-const { PedidoOracao } = require("../../src/Models/PedidoOracao");
+const { PedidoOracao } = require("../../src/models/PedidoOracao");
+const { User } = require("../models/User");
+const { Amigos } = require("../models/Amigos");
+const { SendEmail } = require("../utils/emailSend");
 
 const getAllPedidoOracaoByUserId = async (req, res) => {
   const { userId } = req.body;
@@ -20,11 +23,25 @@ const createNewPedidoOracao = async (req, res) => {
     return res.status(400).json({ message: "Pedido and UserId are required" });
   }
 
+  const USER = await User.findOne({ _id: userId });
+  const USERNAME = USER.username;
+
+  const foundAmigos = await Amigos.findOne({ userId: userId });
+
+  const allowedEmails = foundAmigos.amigos.map((amigo) => amigo.amigoEmail);
+
   try {
     const result = await PedidoOracao.create({
       pedido: pedido,
       userId: userId,
+      allowed: allowedEmails,
     });
+
+    SendEmail(
+      "SpiritScript - Um amigo seu acabou de postar um pedido!",
+      `<h1>Nova nota!</h1><p>Seu amigo ${USERNAME} acabou de postar um pedido de oração! Clique <a href="https://www.youtube.com/watch?v=pfU0QORkRpY">aqui</a> para entrar na plataforma e vê-lo!</p>`,
+      allowedEmails
+    );
 
     res.status(200).json(result);
   } catch {
