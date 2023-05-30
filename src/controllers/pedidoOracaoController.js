@@ -1,6 +1,6 @@
-const { PedidoOracao } = require("../../src/models/PedidoOracao");
-const { User } = require("../models/User");
-const { Amigos } = require("../models/Amigos");
+const { PedidoOracao } = require("../../src/Models/PedidoOracao");
+const { User } = require("../Models/User");
+const { Amigos } = require("../Models/Amigos");
 const { SendEmail } = require("../utils/emailSend");
 
 const getAllPedidoOracaoByUserId = async (req, res) => {

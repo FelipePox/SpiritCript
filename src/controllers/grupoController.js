@@ -1,4 +1,4 @@
-const { Grupo } = require("../models/Grupo");
+const { Grupo } = require("../Models/Grupo");
 
 const getAllGrupos = async (req, res) => {
   const groups = await Grupo.find();

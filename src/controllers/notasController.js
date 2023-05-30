@@ -1,6 +1,6 @@
-const { Amigos } = require("../models/Amigos");
-const { Nota } = require("../models/Nota");
-const { User } = require("../models/User");
+const { Amigos } = require("../Models/Amigos");
+const { Nota } = require("../Models/Nota");
+const { User } = require("../Models/User");
 const { SendEmail } = require("../utils/emailSend");
 
 const getAllNotas = async (req, res) => {

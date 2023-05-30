@@ -1,5 +1,5 @@
-const { Amigos } = require("../models/Amigos");
-const { User } = require("../models/User");
+const { Amigos } = require("../Models/Amigos");
+const { User } = require("../Models/User");
 
 const getAmigosByUserId = async (req, res) => {
   const { userId } = req.body;
