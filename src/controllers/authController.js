@@ -31,6 +31,7 @@ const handleLogin = async (req, res) => {
     res.status(200).json({
       id: foundUser._id,
       username: foundUser.username,
+      email: foundUser.email,
       token: accessToken,
       APItoken: foundUser.APItoken,
     });
