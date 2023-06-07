@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 3500;
 // Connection to DB
 connectDB();
 
-//Handle options credentials check - before CORDS!!!
+// Handle options credentials check - before CORDS!!!
 app.use(credentials);
 
 // CORS
